@@ -23,8 +23,10 @@ int main(int argc, char *argv[])
     std::unordered_map<int, std::vector<int>> itens = content_table.itens_representation(ratings);
 
     Recommender recommender(train, itens,ratings);
-    recommender.get_mean();    
+    recommender.get_mean();
+    recommender.train_weights();    
     recommender.get_prediction(targets_filename);
+    recommender.test(ratings_filename);
     return 0;
 }
 

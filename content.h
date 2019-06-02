@@ -14,7 +14,7 @@
 #include <functional>
 #include <string>
 
-#define HASH_LEN 100
+#define HASH_LEN 50
 using namespace rapidjson;
 
 class ContentTable{

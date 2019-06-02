@@ -70,7 +70,6 @@ std::pair<std::vector<std::vector<int>>, std::vector<int>> ContentTable::create_
     std::pair<std::vector<std::vector<int>>, std::vector<int>> train;
     for(unsigned int i = 0; i < ratings.size(); i++ ){
         std::vector<int> representation = create_representation(this->itens[ratings[i][1]]);
-        representation.push_back(ratings[i][0]);
         train.first.push_back(representation);
         train.second.push_back(ratings[i][2]);
     }
