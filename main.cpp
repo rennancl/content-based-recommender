@@ -19,16 +19,12 @@ int main(int argc, char *argv[])
     std::vector<array<int, 5>> ratings = process_inputs(ratings_filename);
 
     ContentTable content_table(content_filename);
-    std::cout << content_table.itens[4967094] << std::endl;
-    
-    
-    // Model model(get_matrix_dimentions(ratings), ratings);
-    // model.get_mean();
-    // model.create_pq_matrix();
-    // model.fill_pq_matrix(); 
-    // model.stochastic_gradient_descent();
-    // model.get_prediction(targets_filename);
+    std::pair<std::vector<std::vector<int>>, std::vector<int>> train = content_table.create_train(ratings);
+    std::unordered_map<int, std::vector<int>> itens = content_table.itens_representation(ratings);
 
+    Recommender recommender(train, itens,ratings);
+    recommender.get_mean();    
+    recommender.get_prediction(targets_filename);
     return 0;
 }
 
