@@ -18,6 +18,33 @@ Recommender::Recommender(std::pair<std::vector<std::vector<int>>, std::vector<in
         user_ratings[ratings[i][0]].push_back(rate);
     }
 
+    for(std::set<int>::iterator it=users.begin(); it!=users.end(); ++it){
+        int user_id = *it;
+        float sum = 0;
+        float count = 0;
+        for(unsigned int i = 0; i < user_ratings[user_id].size(); i++){
+            sum += user_ratings[user_id][i][1];
+            count++;
+        }
+        user_mean[user_id] = (sum/count);
+    }
+
+    for(unsigned int i = 0; i < ratings.size(); i++){
+        std::array<int,2> rate = {ratings[i][0], ratings[i][2]} ;
+        item_ratings[ratings[i][1]].push_back(rate);
+    }
+
+    for(std::set<int>::iterator it=all_itens.begin(); it!=all_itens.end(); ++it){
+        int item_id = *it;
+        float sum = 0;
+        float count = 0;
+        for(unsigned int i = 0; i < item_ratings[item_id].size(); i++){
+            sum += item_ratings[item_id][i][1];
+            count++;
+        }
+        item_mean[item_id] = (sum/count);
+    }
+
 }
 
 float Recommender::predict(int item, int user,std::vector<float> weights){
@@ -56,8 +83,6 @@ std::vector<float> Recommender::regression(std::vector<float> weights, int user)
         for(unsigned int i = 0; i < weights.size(); i++) weights[i] /= (float)weights.size();
         for(unsigned int i = 0; i < weights.size(); i++) final_weights[i] += LEARNING_RATE*weights[i]; 
     }
-    //for(unsigned int i = 0; i < weights.size(); i++) std::cout <<"   " <<  final_weights[i];
-    //std::cout <<"____________________________--" <<std::endl; 
     return final_weights;
 }
 
@@ -115,16 +140,20 @@ void Recommender::get_prediction(string filename){
             string delimiter2 = ",";
             int item = atoi(work_line.substr( work_line.find(delimiter)+2, work_line.find(delimiter2)).c_str());
     
-            bool is_in = users.find(user) != users.end();
-            if(is_in == false){
-                std::cout << line << "," << mean << std::endl;
+            bool user_is_in = users.find(user) != users.end();
+            bool item_is_in = all_itens.find(item) != all_itens.end();
+
+            if(user_is_in == false and item_is_in == true){
+                std::cout << line << "," << item_mean[item] << std::endl;
                 continue;
             }
 
-            
+            if(user_is_in == true and item_is_in == false){
+                std::cout << line << "," << user_mean[user] << std::endl;
+                continue;
+            }
 
-            is_in = all_itens.find(item) != all_itens.end();
-            if(is_in == false){
+            if(user_is_in == false and item_is_in == false){
                 std::cout << line << "," << mean << std::endl;
                 continue;
             }
@@ -170,20 +199,26 @@ void Recommender::test(string filename){
             int rating = atoi(work_line.substr(0, work_line.find(delimiter)).c_str());
             
             
-            bool is_in = users.find(user) != users.end();
-            if(is_in == false){
+            bool user_is_in = users.find(user) != users.end();
+            bool item_is_in = all_itens.find(item) != all_itens.end();
+
+            if(user_is_in == false and item_is_in == true){
                 sum += (rating - mean) * (rating - mean);
                 count++;
                 continue;
             }
 
-            is_in = all_itens.find(item) != all_itens.end();
-            if(is_in == false){
+            if(user_is_in == true and item_is_in == false){
                 sum += (rating - mean) * (rating - mean);
                 count++;
                 continue;
             }
 
+            if(user_is_in == false and item_is_in == false){
+                sum += (rating - mean) * (rating - mean);
+                count++;
+                continue;
+            }
 
             float prediction = predict(item, user, user_weigts[user]);
             if(prediction > 10) prediction = 10;
@@ -194,7 +229,7 @@ void Recommender::test(string filename){
             //std::cout  << rating - prediction << std::endl;
         }   
     
-    //std::cout  << "Erro de teste" << sqrt(sum/count) << std::endl;
+    std::cout  << "Erro de teste" << sqrt(sum/count) << std::endl;
     file.close();
     return;
 }

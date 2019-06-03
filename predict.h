@@ -26,7 +26,7 @@
 
 #define RECOMMENDER_DIMENTIONS 100
 #define LEARNING_RATE .0000001
-#define EPOCHS 300
+#define EPOCHS 400
 using namespace std;
 using namespace rapidjson;
 
@@ -34,6 +34,11 @@ class Recommender{
     public:
         // std::unordered_map<std::string, std::set<float>> itens_ratings;
         std::unordered_map<int, std::vector<std::array<int,2>>> user_ratings;
+        std::unordered_map<int, float> user_mean;
+        
+        std::unordered_map<int, std::vector<std::array<int,2>>> item_ratings;
+        std::unordered_map<int, float> item_mean;
+        
         std::unordered_map<int, std::vector<float>> user_weigts;
         std::set<int> users;
         std::set<int> all_itens;
