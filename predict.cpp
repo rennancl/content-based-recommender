@@ -121,6 +121,8 @@ void Recommender::get_prediction(string filename){
                 continue;
             }
 
+            
+
             is_in = all_itens.find(item) != all_itens.end();
             if(is_in == false){
                 std::cout << line << "," << mean << std::endl;
@@ -144,7 +146,6 @@ void Recommender::test(string filename){
     file.open(filename);
     bool First = true;
     string line;
-    cout << "UserId:ItemId" << "," << "Prediction" << endl;
     
     float sum = 0;
     int count = 0;
@@ -193,7 +194,7 @@ void Recommender::test(string filename){
             //std::cout  << rating - prediction << std::endl;
         }   
     
-    std::cout  << "Erro de teste" << sum/count << std::endl;
+    //std::cout  << "Erro de teste" << sqrt(sum/count) << std::endl;
     file.close();
     return;
 }

@@ -13,7 +13,7 @@ std::vector<int> ContentTable::create_representation(std::string content){
             representation.push_back(value);
 
             value =  (int)(std::stoi(doc["Year"].GetString())); 
-            representation.push_back(value - 1900);
+            representation.push_back(value - 1950);
 
             value =  (int)(hash_function(doc["Type"].GetString())%HASH_LEN); 
             representation.push_back(value);

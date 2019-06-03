@@ -26,7 +26,7 @@
 
 #define RECOMMENDER_DIMENTIONS 100
 #define LEARNING_RATE .0000001
-#define EPOCHS 200
+#define EPOCHS 300
 using namespace std;
 using namespace rapidjson;
 

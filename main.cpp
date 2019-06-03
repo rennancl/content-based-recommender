@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     recommender.get_mean();
     recommender.train_weights();    
     recommender.get_prediction(targets_filename);
-    recommender.test(ratings_filename);
+    //recommender.test(ratings_filename);
     return 0;
 }
 
