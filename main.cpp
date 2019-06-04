@@ -19,14 +19,12 @@ int main(int argc, char *argv[])
     std::vector<array<int, 5>> ratings = process_inputs(ratings_filename);
 
     ContentTable content_table(content_filename);
-    std::pair<std::vector<std::vector<int>>, std::vector<int>> train = content_table.create_train(ratings);
     std::unordered_map<int, std::vector<int>> itens = content_table.itens_representation(ratings);
 
-    Recommender recommender(train, itens,ratings);
+    Recommender recommender(itens,ratings);
     recommender.get_mean();
     recommender.train_weights();    
     recommender.get_prediction(targets_filename);
-    //recommender.test(ratings_filename);
     return 0;
 }
 
